@@ -1,0 +1,291 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import AdminLayout from "../../components/layout/adminLayout";
+import api from "../../api/axios";
+import { toast } from "react-toastify";
+
+const GenerateReceipt = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    receiptNumber: "",
+    receiptDate: "",
+    name: "",
+    course: "",
+    year: "",
+    paymentMode: "cash",
+    referenceNumber: "",
+  });
+
+  useEffect(() => {
+    if (id) {
+      fetchReceiptById();
+    }
+  }, [id]);
+
+  const fetchReceiptById = async () => {
+    try {
+      const res = await api.get(`/admin/get-receipt/${id}`);
+
+      const data = res.data.receipt;
+
+      setForm({
+        receiptNumber: data.receiptNumber || "",
+        receiptDate: data.receiptDate?.split("T")[0],
+        name: data.name || "",
+        course: data.course || "",
+        year: data.year || "",
+        paymentMode: data.paymentMode || "cash",
+        referenceNumber: data.referenceNumber || "",
+      });
+
+      setParticulars(data.particulars || [{ title: "", amount: "" }]);
+    } catch (err) {
+      toast.error("Error fetching receipt");
+    }
+  };
+
+  // 🔥 Calculate total
+
+  const [particulars, setParticulars] = useState([{ title: "", amount: "" }]);
+
+  const totalAmount = particulars.reduce(
+    (sum, item) => sum + Number(item.amount || 0),
+    0,
+  );
+
+  // 🔥 Handle input
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // 🔥 Handle particulars
+  const handleParticularChange = (index, field, value) => {
+    const updated = [...particulars];
+    updated[index][field] = value;
+    setParticulars(updated);
+  };
+
+  const addParticular = () => {
+    setParticulars([...particulars, { title: "", amount: "" }]);
+  };
+
+  const removeParticular = (index) => {
+    const updated = particulars.filter((_, i) => i !== index);
+    setParticulars(updated);
+  };
+
+  const resetForm = () => {
+    setForm({
+      receiptNumber: "",
+      receiptDate: "",
+      name: "",
+      course: "",
+      year: "",
+      paymentMode: "cash",
+      referenceNumber: "",
+    });
+
+    setParticulars([{ title: "", amount: "" }]);
+  };
+
+  // 🔥 Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validParticulars = particulars.filter(
+      (item) => item.title && item.amount,
+    );
+
+    if (validParticulars.length === 0) {
+      toast.error("Please add at least one valid particular");
+      return;
+    }
+
+    try {
+      if (id) {
+        await api.put(`/admin/edit-receipt/${id}`, {
+          ...form,
+          particulars: validParticulars,
+        });
+
+        toast.success("Receipt Updated");
+      } else {
+        await api.post("/admin/generate-receipt", {
+          ...form,
+          particulars: validParticulars,
+        });
+
+        toast.success("Receipt Generated");
+      }
+
+      // 🔥 RESET FORM
+      resetForm();
+
+      // 🔥 NAVIGATE
+      setTimeout(() => {
+        navigate("/admin/view-receipts");
+      }, 800);
+    } catch (err) {
+      toast.error("Error saving receipt");
+    }
+  };
+
+  return (
+    <AdminLayout>
+      <div className="p-8 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100">
+        {/* HEADER */}
+        <h1 className="text-2xl font-bold text-green-800 mb-1">
+          {id ? "Edit Receipt" : "Generate Receipt"}
+        </h1>
+        <p className="text-sm text-gray-500 mb-6">
+          {id
+            ? "Update receipt details and payment information"
+            : "Enter receipt details and payment information"}
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* BASIC INFO */}
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              name="receiptNumber"
+              placeholder="Receipt Number"
+              value={form.receiptNumber}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="date"
+              name="receiptDate"
+              value={form.receiptDate}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              name="name"
+              placeholder="Student Name"
+              value={form.name}
+              className="border border-gray-300 p-3 rounded-lg col-span-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              name="course"
+              placeholder="Course (e.g. BCA)"
+              value={form.course}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
+              onChange={handleChange}
+            />
+
+            <input
+              name="year"
+              placeholder="Year (e.g. 1st Year / 2024)"
+              value={form.year}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* PARTICULARS */}
+          <div>
+            <h2 className="text-md font-semibold text-gray-700 mb-3 border-b pb-1">
+              Particulars
+            </h2>
+
+            {particulars.map((item, index) => (
+              <div key={index} className="flex gap-2 mb-3 items-center">
+                <input
+                  placeholder="Title"
+                  value={item.title}
+                  className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-green-500"
+                  onChange={(e) =>
+                    handleParticularChange(index, "title", e.target.value)
+                  }
+                />
+
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  value={item.amount}
+                  className="border border-gray-300 p-3 rounded-lg w-40 focus:ring-2 focus:ring-green-500"
+                  onChange={(e) =>
+                    handleParticularChange(index, "amount", e.target.value)
+                  }
+                />
+
+                <button
+                  type="button"
+                  onClick={() => removeParticular(index)}
+                  className="text-red-500 font-bold text-lg hover:scale-110 transition"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={addParticular}
+              className="text-green-700 font-medium text-sm hover:underline"
+            >
+              + Add Particular
+            </button>
+          </div>
+
+          {/* 🔥 PREMIUM TOTAL */}
+          <div className="bg-gradient-to-r from-green-100 to-green-50 border border-green-200 rounded-xl p-5 flex justify-between items-center shadow-sm">
+            <span className="text-gray-700 font-medium text-lg">
+              Total Payable
+            </span>
+            <span className="text-3xl font-bold text-green-800 tracking-wide">
+              ₹ {totalAmount.toLocaleString()}
+            </span>
+          </div>
+
+          {/* PAYMENT MODE */}
+          <div className="grid grid-cols-2 gap-4">
+            <select
+              name="paymentMode"
+              value={form.paymentMode}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
+              onChange={handleChange}
+            >
+              <option value="cash">Cash</option>
+              <option value="upi">UPI</option>
+              <option value="cheque">Cheque</option>
+              <option value="dd">DD</option>
+            </select>
+
+            {form.paymentMode !== "cash" && (
+              <input
+                name="referenceNumber"
+                placeholder="Transaction ID / Ref No"
+                value={form.referenceNumber}
+                className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
+                onChange={handleChange}
+              />
+            )}
+          </div>
+
+          {/* SUBMIT */}
+          <button
+            className={`w-full py-3 rounded-lg text-black font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-300 ${
+              id
+                ? "bg-green-600 hover:bg-green-700 text-white"
+                : "bg-yellow-500 hover:bg-yellow-600"
+            }`}
+          >
+            {id ? "Update Receipt" : "Generate Receipt"}
+          </button>
+        </form>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default GenerateReceipt;
