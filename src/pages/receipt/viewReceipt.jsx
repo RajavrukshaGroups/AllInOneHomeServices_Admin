@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../components/layout/adminLayout";
 import api from "../../api/axios";
-import { FiEdit, FiEye } from "react-icons/fi";
+import { FiEdit, FiEye, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 const ViewReceipts = () => {
@@ -36,6 +36,26 @@ const ViewReceipts = () => {
   useEffect(() => {
     fetchReceipts();
   }, [page, search]);
+
+  const formatName = (name) => {
+    return name?.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this receipt?"))
+      return;
+
+    try {
+      await api.delete(`/admin/delete-receipt/${id}`);
+
+      // 🔥 refresh list
+      fetchReceipts();
+
+      alert("Receipt deleted successfully");
+    } catch (err) {
+      alert(err.response?.data?.message || "Error deleting receipt");
+    }
+  };
 
   return (
     <AdminLayout>
@@ -81,7 +101,7 @@ const ViewReceipts = () => {
                     <td className="p-3 font-medium text-green-800">
                       {item.receiptNumber}
                     </td>
-                    <td className="p-3">{item.name}</td>
+                    <td className="p-3">{formatName(item.name)}</td>
                     <td className="p-3">{item.course}</td>
                     <td className="p-3">{item.year}</td>
                     <td className="p-3 font-semibold text-green-700">
@@ -94,14 +114,23 @@ const ViewReceipts = () => {
                     </td>
 
                     {/* ✏️ EDIT */}
-                    <td className="p-3">
+                    <td className="p-3 flex gap-3">
+                      {/* EDIT */}
                       <button
                         onClick={() =>
                           navigate(`/admin/generate-receipt/${item._id}`)
                         }
-                        className="text-green-700 hover:text-green-900 transition"
+                        className="text-green-700 hover:text-green-900"
                       >
                         <FiEdit size={18} />
+                      </button>
+
+                      {/* DELETE */}
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <FiTrash size={18} />
                       </button>
                     </td>
                     <td className="p-3">

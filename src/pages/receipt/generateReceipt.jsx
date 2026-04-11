@@ -23,6 +23,12 @@ const GenerateReceipt = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (!id) {
+      generateReceiptNumber();
+    }
+  }, []);
+
   const fetchReceiptById = async () => {
     try {
       const res = await api.get(`/admin/get-receipt/${id}`);
@@ -60,8 +66,27 @@ const GenerateReceipt = () => {
   };
 
   // 🔥 Handle particulars
+  // const handleParticularChange = (index, field, value) => {
+  //   const updated = [...particulars];
+  //   updated[index][field] = value;
+  //   setParticulars(updated);
+  // };
+
   const handleParticularChange = (index, field, value) => {
     const updated = [...particulars];
+
+    // 🔥 CHECK DUPLICATE ONLY FOR TITLE
+    if (field === "title") {
+      const isDuplicate = updated.some(
+        (item, i) => item.title === value && i !== index,
+      );
+
+      if (isDuplicate) {
+        toast.error("This particular is already selected");
+        return; // 🚫 STOP UPDATE
+      }
+    }
+
     updated[index][field] = value;
     setParticulars(updated);
   };
@@ -127,7 +152,40 @@ const GenerateReceipt = () => {
         navigate("/admin/view-receipts");
       }, 800);
     } catch (err) {
-      toast.error("Error saving receipt");
+      console.log("error", err);
+
+      const message = err.response?.data?.message || "Error saving receipt";
+
+      toast.error(message);
+    }
+  };
+
+  const generateReceiptNumber = async () => {
+    try {
+      const res = await api.get("/admin/fetch-all-receipts?page=1");
+
+      const lastReceipt = res.data.data[0];
+
+      let nextNumber = 1;
+
+      if (lastReceipt?.receiptNumber) {
+        const lastNum = parseInt(
+          lastReceipt.receiptNumber.replace("SLCMS", ""),
+        );
+
+        if (!isNaN(lastNum)) {
+          nextNumber = lastNum + 1;
+        }
+      }
+
+      const newNumber = `SLCMS${String(nextNumber).padStart(4, "0")}`;
+
+      setForm((prev) => ({
+        ...prev,
+        receiptNumber: newNumber,
+      }));
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -174,13 +232,30 @@ const GenerateReceipt = () => {
               required
             />
 
-            <input
+            {/* <input
               name="course"
               placeholder="Course (e.g. BCA)"
               value={form.course}
               className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
               onChange={handleChange}
-            />
+            /> */}
+            <select
+              name="course"
+              value={form.course}
+              onChange={handleChange}
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500"
+            >
+              <option value="">Select Course</option>
+              <option>B.Com</option>
+              <option>BBA</option>
+              <option>BCA</option>
+              <option>B.Sc</option>
+              <option>BA</option>
+              <option>M.Com</option>
+              <option>MCA</option>
+              <option>MBA</option>
+              <option>IAS/KAS</option>
+            </select>
 
             <input
               name="year"
@@ -199,14 +274,41 @@ const GenerateReceipt = () => {
 
             {particulars.map((item, index) => (
               <div key={index} className="flex gap-2 mb-3 items-center">
-                <input
+                {/* <input
                   placeholder="Title"
                   value={item.title}
                   className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-green-500"
                   onChange={(e) =>
                     handleParticularChange(index, "title", e.target.value)
                   }
-                />
+                /> */}
+                <select
+                  value={item.title}
+                  onChange={(e) =>
+                    handleParticularChange(index, "title", e.target.value)
+                  }
+                  className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Select Particular</option>
+
+                  {[
+                    "Tuition Fees",
+                    "Hostel Fees",
+                    "Miscellaneous Expenses",
+                    "Others",
+                    "IAS/KAS Academy",
+                  ].map((option) => (
+                    <option
+                      key={option}
+                      value={option}
+                      disabled={particulars.some(
+                        (p, i) => p.title === option && i !== index,
+                      )}
+                    >
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
                 <input
                   type="number"
