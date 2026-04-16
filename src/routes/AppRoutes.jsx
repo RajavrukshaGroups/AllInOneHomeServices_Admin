@@ -18,31 +18,31 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/admin/generate-receipt"
           element={
             <ProtectedRoute>
               <GenerateReceipt />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           path="/admin/generate-receipt/:id"
           element={
             <ProtectedRoute>
               <GenerateReceipt />
             </ProtectedRoute>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/admin/view-receipts"
           element={
             <ProtectedRoute>
               <ViewReceipts />
             </ProtectedRoute>
           }
-        />
+        /> */}
       </Routes>
     </BrowserRouter>
   );

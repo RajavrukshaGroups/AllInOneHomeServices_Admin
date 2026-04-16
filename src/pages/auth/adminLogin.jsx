@@ -51,16 +51,17 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-green-50 to-green-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#facc15] px-4">
+      {" "}
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-gray-200 transition-all duration-300">
         {/* LOGO */}
-        <div className="flex justify-center mb-3">
+        {/* <div className="flex justify-center mb-3">
           <img
             src={logo}
             alt="SLCMS Logo"
             className="w-20 h-20 object-contain"
           />
-        </div>
+        </div> */}
 
         {/* TITLE */}
         <h1 className="text-2xl font-bold text-gray-800 text-center mb-1">
@@ -68,7 +69,7 @@ const AdminLogin = () => {
         </h1>
 
         <p className="text-gray-500 text-center mb-6 text-sm">
-          Sri Lakshmi College Of Management & Science
+          All In One Home Services
         </p>
 
         {/* FORM */}
@@ -122,7 +123,7 @@ const AdminLogin = () => {
 
         {/* FOOTER */}
         <p className="text-xs text-gray-400 text-center mt-6">
-          © {new Date().getFullYear()} SLCMS – Admin Panel
+          © {new Date().getFullYear()} All In One Home Services – Admin Panel
         </p>
       </div>
     </div>

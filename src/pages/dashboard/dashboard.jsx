@@ -6,63 +6,71 @@ const Dashboard = () => {
     <AdminLayout>
       <div className="p-6 space-y-6">
         {/* 🔥 Welcome Section */}
-        <div className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl p-6 shadow">
+        <div className="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#facc15] text-white rounded-xl p-6 shadow">
           <h1 className="text-2xl font-bold mb-1">
-            Welcome to SLCMS Admin Panel 👋
+            Welcome to All In One Home Services Admin Panel 👋
           </h1>
-          {/* <p className="text-sm text-green-100">
-            Manage students, memberships, payments, and notifications
-            efficiently.
-          </p> */}
+          <p className="text-sm text-gray-200">
+            Manage services, bookings, and operations seamlessly.
+          </p>
         </div>
 
-        {/* 🔥 Stats Cards */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl shadow p-5 border border-gray-100 hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm text-gray-500">Total Users</h2>
-              <FiUsers className="text-green-600 text-xl" />
-            </div>
-            <p className="text-2xl font-bold text-gray-800 mt-2">1,240</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-5 border border-gray-100 hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm text-gray-500">Categories</h2>
-              <FiGrid className="text-green-600 text-xl" />
-            </div>
-            <p className="text-2xl font-bold text-gray-800 mt-2">18</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-5 border border-gray-100 hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm text-gray-500">Membership Plans</h2>
-              <FiAward className="text-green-600 text-xl" />
-            </div>
-            <p className="text-2xl font-bold text-gray-800 mt-2">6</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-5 border border-gray-100 hover:shadow-md transition">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm text-gray-500">Payments</h2>
-              <FiCreditCard className="text-green-600 text-xl" />
-            </div>
-            <p className="text-2xl font-bold text-gray-800 mt-2">₹2.4L</p>
-          </div>
-        </div> */}
-
-        {/* 🔥 Info Section */}
-        <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
-          <h2 className="text-lg font-semibold text-green-800 mb-2">
-            About SLCMS
+        {/* 🔥 About Section */}
+        <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">
+            About All In One Home Services
           </h2>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Sri Lakshmi College of Management and Science is committed to
-            delivering excellence in education and empowering students with
-            knowledge, skills, and values. This admin panel helps manage
-            institutional operations efficiently, ensuring smooth workflows and
-            better decision-making.
+            All In One Home Services is a platform designed to simplify and
+            manage home service bookings such as cleaning, plumbing, painting,
+            and maintenance. This admin panel allows you to efficiently manage
+            services, pricing, bookings, and customer interactions — ensuring a
+            smooth and reliable experience for both customers and service
+            providers.
           </p>
+        </div>
+
+        {/* 🔥 Quick Stats (Optional but Recommended) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <FiGrid className="text-yellow-500 text-xl" />
+              <div>
+                <p className="text-sm text-gray-500">Services</p>
+                <h3 className="text-lg font-semibold text-gray-800">--</h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <FiUsers className="text-yellow-500 text-xl" />
+              <div>
+                <p className="text-sm text-gray-500">Customers</p>
+                <h3 className="text-lg font-semibold text-gray-800">--</h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <FiCreditCard className="text-yellow-500 text-xl" />
+              <div>
+                <p className="text-sm text-gray-500">Bookings</p>
+                <h3 className="text-lg font-semibold text-gray-800">--</h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <FiAward className="text-yellow-500 text-xl" />
+              <div>
+                <p className="text-sm text-gray-500">Revenue</p>
+                <h3 className="text-lg font-semibold text-gray-800">₹ --</h3>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </AdminLayout>
