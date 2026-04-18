@@ -2,8 +2,10 @@ import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import AdminLogin from "../pages/auth/adminLogin";
 import ProtectedRoute from "../common/protectedRoute";
 import Dashboard from "../pages/dashboard/dashboard";
-import GenerateReceipt from "../pages/receipt/generateReceipt";
-import ViewReceipts from "../pages/receipt/viewReceipt";
+// import GenerateReceipt from "../pages/receipt/generateReceipt";
+// import ViewReceipts from "../pages/receipt/viewReceipt";
+import CreateServices from "../pages/services/services";
+import IndividualService from "../pages/services/individualService";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -18,31 +20,22 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="/admin/generate-receipt"
+        <Route
+          path="/admin/services"
           element={
             <ProtectedRoute>
-              <GenerateReceipt />
+              <CreateServices />
             </ProtectedRoute>
           }
-        /> */}
-
-        {/* <Route
-          path="/admin/generate-receipt/:id"
+        />
+        <Route
+          path="/admin/services/:id"
           element={
             <ProtectedRoute>
-              <GenerateReceipt />
+              <IndividualService />
             </ProtectedRoute>
           }
-        /> */}
-        {/* <Route
-          path="/admin/view-receipts"
-          element={
-            <ProtectedRoute>
-              <ViewReceipts />
-            </ProtectedRoute>
-          }
-        /> */}
+        />
       </Routes>
     </BrowserRouter>
   );
