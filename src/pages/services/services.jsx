@@ -39,6 +39,7 @@ const CreateServices = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [bhkSelections, setBhkSelections] = useState({});
 
   // Loading states
   const [loading, setLoading] = useState(false);
@@ -710,15 +711,27 @@ const CreateServices = () => {
                                   key={val}
                                   onClick={() => {
                                     const updated = [...form.options];
+
                                     const exists = updated[i].values.find(
                                       (v) => v.label === val,
                                     );
+
                                     if (!exists) {
                                       updated[i].values.push({
                                         label: val,
                                         price: 0,
                                       });
                                     }
+
+                                    // 🔥 track BHK selection
+                                    setBhkSelections((prev) => ({
+                                      ...prev,
+                                      [val]: prev[val] || {
+                                        type: "",
+                                        price: 0,
+                                      },
+                                    }));
+
                                     setForm({ ...form, options: updated });
                                   }}
                                   className="px-3 py-1 text-sm font-medium rounded-full bg-gray-900/50 border border-gray-700 text-gray-300 hover:bg-amber-400/10 hover:border-amber-400/30 hover:text-amber-300 transition-all"
@@ -729,6 +742,97 @@ const CreateServices = () => {
                               ))}
                             </div>
                           </div>
+
+                          {/* 🔥 BHK TYPE SELECTION UI */}
+                          {opt.name?.toLowerCase() === "bhk" &&
+                            Object.keys(bhkSelections).map((bhk) => (
+                              <div
+                                key={bhk}
+                                className="mt-3 p-3 bg-gray-900/40 rounded-lg border border-gray-700"
+                              >
+                                <p className="text-sm font-semibold text-amber-400 mb-2">
+                                  {bhk}
+                                </p>
+
+                                <div className="flex gap-2 mb-2">
+                                  {[
+                                    "Vacant",
+                                    "Occupied",
+                                    "Project Completion",
+                                  ].map((type) => (
+                                    <button
+                                      key={type}
+                                      type="button"
+                                      onClick={() => {
+                                        setBhkSelections((prev) => ({
+                                          ...prev,
+                                          [bhk]: {
+                                            ...prev[bhk],
+                                            type,
+                                          },
+                                        }));
+
+                                        const updated = [...form.options];
+                                        const label = `${bhk} - ${type}`;
+
+                                        const exists = updated[i].values.find(
+                                          (v) => v.label === label,
+                                        );
+
+                                        if (!exists) {
+                                          updated[i].values.push({
+                                            label,
+                                            price: 0,
+                                          });
+                                        }
+
+                                        setForm({ ...form, options: updated });
+                                      }}
+                                      className={`px-3 py-1 rounded-full text-sm border ${
+                                        bhkSelections[bhk]?.type === type
+                                          ? "bg-amber-500 text-white"
+                                          : "bg-gray-800 text-gray-300 border-gray-600"
+                                      }`}
+                                    >
+                                      {type}
+                                    </button>
+                                  ))}
+                                </div>
+
+                                {bhkSelections[bhk]?.type && (
+                                  <input
+                                    type="number"
+                                    placeholder="Enter price"
+                                    value={bhkSelections[bhk]?.price || ""}
+                                    onChange={(e) => {
+                                      const price = Number(e.target.value);
+
+                                      setBhkSelections((prev) => ({
+                                        ...prev,
+                                        [bhk]: {
+                                          ...prev[bhk],
+                                          price,
+                                        },
+                                      }));
+
+                                      const updated = [...form.options];
+                                      const label = `${bhk} - ${bhkSelections[bhk].type}`;
+
+                                      const index = updated[i].values.findIndex(
+                                        (v) => v.label === label,
+                                      );
+
+                                      if (index !== -1) {
+                                        updated[i].values[index].price = price;
+                                      }
+
+                                      setForm({ ...form, options: updated });
+                                    }}
+                                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white"
+                                  />
+                                )}
+                              </div>
+                            ))}
 
                           {opt.values.map((val, j) => (
                             <div
