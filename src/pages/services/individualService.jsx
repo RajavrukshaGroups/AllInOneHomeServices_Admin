@@ -156,28 +156,34 @@ const IndividualService = () => {
             )}
 
             {/* 👉 CHILD INDICATOR */}
-          {/* 🔥 SCHEDULE TITLE LOGIC */}
+            {/* 🔥 SCHEDULE TITLE LOGIC */}
 
-{/* ✅ NO CHILDREN → SHOW TITLE IN MAIN CARD */}
-{(!item.children || item.children.length === 0) && (
-  <div className="mt-4 pt-3 border-t border-gray-700/50">
-    <p className="text-sm font-semibold text-amber-400 tracking-wide">
-      Schedule Time Slots
-    </p>
-  </div>
-)}
+            {/* ✅ NO CHILDREN → SHOW TITLE IN MAIN CARD */}
+            {(!item.children || item.children.length === 0) && (
+              <div className="mt-4 pt-3 border-t border-gray-700/50">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // 🔥 prevent card click
+                    navigate(`/admin/schedule-slots/${item._id}`);
+                  }}
+                  className="text-sm font-semibold text-amber-400 tracking-wide hover:text-amber-300 transition"
+                >
+                  Schedule Time Slots →
+                </button>
+              </div>
+            )}
 
-{/* 👉 CHILD INDICATOR */}
-{item.children?.length > 0 && (
-  <div className="mt-3 pt-2 border-t border-gray-700/50 flex items-center justify-between">
-    <span className="text-xs text-amber-400 font-medium flex items-center gap-1">
-      {item.children.length} Sub Services
-    </span>
-    <span className="text-xs text-amber-400/80 flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
-      View details <FiChevronRight className="text-sm" />
-    </span>
-  </div>
-)}
+            {/* 👉 CHILD INDICATOR */}
+            {item.children?.length > 0 && (
+              <div className="mt-3 pt-2 border-t border-gray-700/50 flex items-center justify-between">
+                <span className="text-xs text-amber-400 font-medium flex items-center gap-1">
+                  {item.children.length} Sub Services
+                </span>
+                <span className="text-xs text-amber-400/80 flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+                  View details <FiChevronRight className="text-sm" />
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

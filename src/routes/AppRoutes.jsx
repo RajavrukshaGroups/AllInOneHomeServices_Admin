@@ -6,6 +6,7 @@ import Dashboard from "../pages/dashboard/dashboard";
 // import ViewReceipts from "../pages/receipt/viewReceipt";
 import CreateServices from "../pages/services/services";
 import IndividualService from "../pages/services/individualService";
+import ScheduleTimeSlots from "../pages/services/scheduleTimeSlots";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -33,6 +34,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <IndividualService />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/schedule-slots/:serviceId"
+          element={
+            <ProtectedRoute>
+              <ScheduleTimeSlots />
             </ProtectedRoute>
           }
         />
