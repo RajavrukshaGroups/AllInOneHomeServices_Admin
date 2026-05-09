@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/dashboard";
 import CreateServices from "../pages/services/services";
 import IndividualService from "../pages/services/individualService";
 import ScheduleTimeSlots from "../pages/services/scheduleTimeSlots";
+import Bookings from "../pages/bookings/bookings";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -26,6 +27,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <CreateServices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/bookings"
+          element={
+            <ProtectedRoute>
+              <Bookings />
             </ProtectedRoute>
           }
         />

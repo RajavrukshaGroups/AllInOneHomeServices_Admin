@@ -20,6 +20,9 @@ import {
   FiTag,
   FiGrid,
   FiList,
+  FiMessageSquare,
+  FiUser,
+  FiStar,
 } from "react-icons/fi";
 import imageCompression from "browser-image-compression";
 
@@ -42,6 +45,7 @@ const CreateServices = () => {
     keyFeatures: [],
     rating: "",
     totalReviews: "",
+    feedbacks: [],
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
@@ -104,6 +108,7 @@ const CreateServices = () => {
       keyFeatures: [],
       rating: "",
       totalReviews: "",
+      feedbacks: [],
     });
     setEditingId(null);
     setImagePreviews([]);
@@ -132,6 +137,7 @@ const CreateServices = () => {
       keyFeatures: service.keyFeatures || [],
       rating: service.rating || "",
       totalReviews: service.totalReviews || "",
+      feedbacks: service.feedbacks || [],
     });
     setImagePreviews(service.images || []);
     setImageFiles([]);
@@ -170,6 +176,8 @@ const CreateServices = () => {
           formData.append("options", JSON.stringify(form.options));
         } else if (key === "keyFeatures") {
           formData.append("keyFeatures", JSON.stringify(form.keyFeatures));
+        } else if (key === "feedbacks") {
+          formData.append("feedbacks", JSON.stringify(form.feedbacks));
         } else {
           formData.append(key, form[key]);
         }
@@ -789,6 +797,166 @@ const CreateServices = () => {
                                   >
                                     <FiX className="w-5 h-5" />
                                   </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* ⭐ Customer Feedbacks */}
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                                  <FiMessageSquare className="text-amber-400" />
+                                  Customer Feedbacks
+                                </label>
+
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Add testimonials/reviews for this service
+                                </p>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setForm({
+                                    ...form,
+                                    feedbacks: [
+                                      ...form.feedbacks,
+                                      {
+                                        author: "",
+                                        review: "",
+                                        rating: 5,
+                                      },
+                                    ],
+                                  })
+                                }
+                                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-amber-400 bg-amber-400/10 hover:bg-amber-400/20 rounded-xl border border-amber-400/30 transition-all"
+                              >
+                                <FiPlus className="w-4 h-4" />
+                                Add Feedback
+                              </button>
+                            </div>
+
+                            {form.feedbacks.length === 0 && (
+                              <div className="p-6 rounded-xl border border-dashed border-gray-700 text-center text-gray-500">
+                                No feedbacks added yet
+                              </div>
+                            )}
+
+                            <div className="space-y-4">
+                              {form.feedbacks.map((feedback, index) => (
+                                <div
+                                  key={index}
+                                  className="p-5 rounded-2xl bg-gray-800/40 border border-gray-700 space-y-4"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <h4 className="text-white font-medium">
+                                      Feedback #{index + 1}
+                                    </h4>
+
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const updated = [...form.feedbacks];
+                                        updated.splice(index, 1);
+
+                                        setForm({
+                                          ...form,
+                                          feedbacks: updated,
+                                        });
+                                      }}
+                                      className="p-2 rounded-lg text-gray-400 hover:text-rose-400 hover:bg-rose-400/10 transition-all"
+                                    >
+                                      <FiX />
+                                    </button>
+                                  </div>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* Author */}
+                                    <div className="space-y-1.5">
+                                      <label className="text-sm text-gray-300">
+                                        Author Name
+                                      </label>
+
+                                      <div className="relative">
+                                        <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+
+                                        <input
+                                          type="text"
+                                          value={feedback.author}
+                                          placeholder="e.g., Rahul Sharma"
+                                          onChange={(e) => {
+                                            const updated = [...form.feedbacks];
+
+                                            updated[index].author =
+                                              e.target.value;
+
+                                            setForm({
+                                              ...form,
+                                              feedbacks: updated,
+                                            });
+                                          }}
+                                          className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 outline-none"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Rating */}
+                                    <div className="space-y-1.5">
+                                      <label className="text-sm text-gray-300">
+                                        Rating
+                                      </label>
+
+                                      <div className="relative">
+                                        <FiStar className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400" />
+
+                                        <input
+                                          type="number"
+                                          min="1"
+                                          max="5"
+                                          step="0.1"
+                                          value={feedback.rating}
+                                          onChange={(e) => {
+                                            const updated = [...form.feedbacks];
+
+                                            updated[index].rating =
+                                              e.target.value;
+
+                                            setForm({
+                                              ...form,
+                                              feedbacks: updated,
+                                            });
+                                          }}
+                                          className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 outline-none"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Review */}
+                                  <div className="space-y-1.5">
+                                    <label className="text-sm text-gray-300">
+                                      Customer Review
+                                    </label>
+
+                                    <textarea
+                                      rows={4}
+                                      value={feedback.review}
+                                      placeholder="Write the customer testimonial/review..."
+                                      onChange={(e) => {
+                                        const updated = [...form.feedbacks];
+
+                                        updated[index].review = e.target.value;
+
+                                        setForm({
+                                          ...form,
+                                          feedbacks: updated,
+                                        });
+                                      }}
+                                      className="w-full px-4 py-3 rounded-xl bg-gray-900/60 border border-gray-700 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 outline-none resize-none"
+                                    />
+                                  </div>
                                 </div>
                               ))}
                             </div>

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FiHome, FiGrid, FiMenu, FiLogOut } from "react-icons/fi";
+import { FiHome, FiGrid, FiMenu, FiLogOut, FiUser } from "react-icons/fi";
 import { useState } from "react";
 import { logoutAdmin } from "../../utils/auth";
 
@@ -9,6 +9,7 @@ const TopNavbar = () => {
   const navItems = [
     { to: "/admin/dashboard", icon: FiHome, label: "Dashboard" },
     { to: "/admin/services", icon: FiGrid, label: "Create Services" },
+    { to: "/admin/bookings", icon: FiUser, label: "Bookings" },
   ];
 
   const linkClasses = ({ isActive }) =>
