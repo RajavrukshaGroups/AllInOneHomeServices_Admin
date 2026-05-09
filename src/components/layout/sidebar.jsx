@@ -22,6 +22,7 @@ const Sidebar = ({ isOpen }) => {
   const navItems = [
     { to: "/admin/dashboard", icon: FiHome, label: "Dashboard" },
     { to: "/admin/services", icon: FiGrid, label: "Create Services" },
+    { to: "/admin/bookings", icon: FiUser, label: "Bookings" },
   ];
 
   return (

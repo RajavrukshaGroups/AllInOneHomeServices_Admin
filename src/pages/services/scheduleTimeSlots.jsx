@@ -70,7 +70,7 @@ const ScheduleTimeSlots = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/40 p-4 md:p-8">
+      <div className="min-h-screen bg-white p-4 md:p-8">
         {/* Header Section with Premium Accent */}
         <div className="max-w-7xl mx-auto mb-10">
           <div className="flex items-center gap-4">
@@ -110,7 +110,7 @@ const ScheduleTimeSlots = () => {
 
               <div className="flex flex-col lg:flex-row">
                 {/* LEFT SECTION – IMAGES + KEY FEATURES (Luxury Styling) */}
-                <div className="lg:w-1/2 bg-gradient-to-br from-slate-50/80 to-indigo-50/40 p-8 md:p-10 space-y-8">
+                <div className="lg:w-1/2 bg-white p-8 md:p-10 space-y-8">
                   {/* Gallery Section */}
                   {service.images?.length > 0 ? (
                     <div className="space-y-5">
@@ -180,10 +180,140 @@ const ScheduleTimeSlots = () => {
                       </div>
                     </div>
                   )}
+                    {/* ⭐ CUSTOMER FEEDBACKS */}
+                  {service.feedbacks?.length > 0 && (
+                    <div className="space-y-5">
+                      {/* Heading */}
+                      <div className="flex items-center gap-3">
+                        <div className="h-6 w-1 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full"></div>
+
+                        <div>
+                          <h3 className="text-xl font-bold text-slate-800 tracking-tight">
+                            Customer Feedbacks
+                          </h3>
+
+                          <p className="text-sm text-slate-500 mt-0.5">
+                            What customers are saying about this service
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Overall Rating Card */}
+                      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-yellow-50 border border-amber-200 p-5 shadow-md">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-300/10 rounded-full blur-3xl"></div>
+
+                        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                          {/* Left */}
+                          <div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-5xl font-extrabold text-amber-600">
+                                {service.rating}
+                              </span>
+
+                              <div>
+                                <div className="flex items-center gap-1 text-amber-500 text-lg">
+                                  {"★".repeat(Math.floor(service.rating))}
+                                  {service.rating % 1 !== 0 && "½"}
+                                </div>
+
+                                <p className="text-sm text-slate-600 mt-1">
+                                  Based on {service.totalReviews} review
+                                  {service.totalReviews > 1 ? "s" : ""}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {service.feedbacks.slice(0, 4).map((fb, i) => (
+                              <div
+                                key={i}
+                                className="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold shadow-md border-2 border-white"
+                              >
+                                {fb.author?.charAt(0)?.toUpperCase()}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Feedback Cards */}
+                      <div className="grid grid-cols-1 gap-4">
+                        {service.feedbacks.map((feedback, index) => (
+                          <div
+                            key={feedback._id || index}
+                            className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                          >
+                            {/* Decorative Glow */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-200/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                            <div className="relative">
+                              {/* Top */}
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                  {/* Avatar */}
+                                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white flex items-center justify-center text-xl font-bold shadow-lg">
+                                    {feedback.author?.charAt(0)?.toUpperCase()}
+                                  </div>
+
+                                  {/* Author */}
+                                  <div>
+                                    <h4 className="text-lg font-bold text-slate-800">
+                                      {feedback.author}
+                                    </h4>
+
+                                    <div className="flex items-center gap-1 mt-1">
+                                      {[1, 2, 3, 4, 5].map((star) => (
+                                        <span
+                                          key={star}
+                                          className={`text-sm ${
+                                            star <= feedback.rating
+                                              ? "text-amber-500"
+                                              : "text-slate-300"
+                                          }`}
+                                        >
+                                          ★
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Review Number */}
+                                <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                  Review #{index + 1}
+                                </div>
+                              </div>
+
+                              {/* Review Text */}
+                              <div className="mt-5">
+                                <p className="text-slate-600 leading-relaxed text-[15px]">
+                                  “{feedback.review}”
+                                </p>
+                              </div>
+
+                              {/* Footer */}
+                              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <span className="text-xs text-slate-400">
+                                 {new Date(feedback.createdAt).toLocaleDateString("en-GB")}
+                                </span>
+
+                                <div className="flex items-center gap-1 text-emerald-600 text-sm font-medium">
+                                  <span>✔</span>
+                                  Verified Customer
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* RIGHT SECTION – DETAILS (Luxury Typography & Cards) */}
-                <div className="lg:w-1/2 p-8 md:p-10 space-y-8 bg-white/50 backdrop-blur-sm">
+                <div className="lg:w-1/2 p-8 md:p-10 space-y-8 bg-white">
                   {/* Service Name & Premium Badges */}
                   <div className="space-y-4">
                     <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight tracking-tight">
