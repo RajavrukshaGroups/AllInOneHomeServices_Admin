@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen }) => {
             <>
               <span className="w-1.5 h-5 bg-gradient-to-b from-amber-400 to-amber-500 rounded-full"></span>
               <span className="text-slate-800 font-semibold text-sm">
-                All In One Home Services
+                MK Home Services
               </span>
             </>
           ) : (
@@ -94,7 +94,7 @@ const Sidebar = ({ isOpen }) => {
       {/* FOOTER */}
       {isOpen && (
         <div className="absolute bottom-0 w-full px-6 py-4 text-xs text-slate-500 border-t border-slate-200/60">
-          © {new Date().getFullYear()} All In One Home Services
+          © {new Date().getFullYear()} MK Home Services
         </div>
       )}
     </aside>

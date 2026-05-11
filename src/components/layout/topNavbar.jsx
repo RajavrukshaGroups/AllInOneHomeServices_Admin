@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FiHome, FiGrid, FiMenu, FiLogOut, FiUser } from "react-icons/fi";
 import { useState } from "react";
 import { logoutAdmin } from "../../utils/auth";
+import logo from "../../assets/logo.png";
 
 const TopNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,11 +24,16 @@ const TopNavbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
       <div className="flex items-center justify-between px-4 md:px-6 h-16">
-        {/* LEFT - LOGO */}
+        {/* LEFT - LOGO + TITLE */}
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-5 bg-gradient-to-b from-amber-400 to-amber-500 rounded-full"></span>
+          <img
+            src={logo}
+            alt="MK Home Services Logo"
+            className="h-12 w-12 md:h-14 md:w-14 object-contain rounded-full shadow-md"
+          />
+          {/* <span className="w-1.5 h-5 bg-gradient-to-b from-amber-400 to-amber-500 rounded-full"></span> */}
           <span className="font-semibold text-slate-800 text-sm md:text-base">
-            All In One Home Services
+            MK Home Services
           </span>
         </div>
 

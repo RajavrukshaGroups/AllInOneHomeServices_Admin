@@ -55,21 +55,21 @@ const AdminLogin = () => {
       {" "}
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-gray-200 transition-all duration-300">
         {/* LOGO */}
-        {/* <div className="flex justify-center mb-3">
+        <div className="flex justify-center mb-3">
           <img
             src={logo}
-            alt="SLCMS Logo"
+            alt="MK HOME Logo"
             className="w-20 h-20 object-contain"
           />
-        </div> */}
+        </div>
 
         {/* TITLE */}
         <h1 className="text-2xl font-bold text-gray-800 text-center mb-1">
           Admin Login
         </h1>
 
-        <p className="text-gray-500 text-center mb-6 text-sm">
-          All In One Home Services
+        <p className="text-black-500 text-center mb-6 text-sm font-bold">
+          MK Home Services
         </p>
 
         {/* FORM */}
@@ -122,8 +122,8 @@ const AdminLogin = () => {
         </form>
 
         {/* FOOTER */}
-        <p className="text-xs text-gray-400 text-center mt-6">
-          © {new Date().getFullYear()} All In One Home Services – Admin Panel
+        <p className="text-xs text-black-400 text-center mt-6">
+          © {new Date().getFullYear()} MK Home Services – Admin Panel
         </p>
       </div>
     </div>

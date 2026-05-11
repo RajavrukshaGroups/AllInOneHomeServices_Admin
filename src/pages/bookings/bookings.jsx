@@ -77,7 +77,8 @@ const Bookings = () => {
 
       case "Completed":
         return "bg-emerald-100 text-emerald-700";
-
+      case "Cancelled":
+        return "bg-rose-100 text-rose-700";
       default:
         return "bg-slate-100 text-slate-700";
     }
@@ -170,12 +171,23 @@ const Bookings = () => {
         {/* Header Section */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-800 md:text-4xl">
-              Bookings
-            </h1>
-            <p className="mt-1 text-slate-500">
-              Manage and track all customer bookings
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl font-bold tracking-tight text-slate-800 md:text-4xl">
+                Bookings
+              </h1>
+
+              {!loading && (
+                <div className="rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+                    Total Records
+                  </span>
+
+                  <span className="ml-2 text-sm font-bold text-indigo-800">
+                    {bookings.length.toLocaleString()}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Search Bar with Icon */}
@@ -335,6 +347,7 @@ const Bookings = () => {
                                       service.workProgress || "Not Started",
                                     )}`}
                                   >
+                                    Work Status:{" "}
                                     {service.workProgress || "Not Started"}
                                   </span>
 
@@ -344,6 +357,7 @@ const Bookings = () => {
                                       service.paymentStatus || "Pending",
                                     )}`}
                                   >
+                                    Payment Status:{" "}
                                     {service.paymentStatus || "Pending"}
                                   </span>
                                 </div>
@@ -378,12 +392,23 @@ const Bookings = () => {
                             </button>
 
                             {/* CANCEL BOOKING */}
-                            {booking.bookingStatus !== "Cancelled" && (
+                            {booking.bookingStatus !== "Cancelled" ? (
                               <button
                                 onClick={() => cancelBooking(booking._id)}
                                 className="rounded-lg bg-rose-50 px-3 py-1.5 text-sm font-medium text-rose-700 transition-all hover:bg-rose-100 hover:shadow-sm"
                               >
                                 Cancel
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  updateBookingStatus(booking._id, {
+                                    bookingStatus: "Confirmed",
+                                  })
+                                }
+                                className="rounded-lg bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition-all hover:bg-emerald-100 hover:shadow-sm"
+                              >
+                                Revive
                               </button>
                             )}
                           </div>

@@ -22,7 +22,7 @@ const Header = ({ toggleSidebar }) => {
         <div className="hidden md:flex items-center gap-2">
           <span className="w-1.5 h-5 bg-gradient-to-b from-amber-400 to-amber-500 rounded-full"></span>
           <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-            All In One Home Services
+            MK Home Services
           </h1>
         </div>
       </div>
